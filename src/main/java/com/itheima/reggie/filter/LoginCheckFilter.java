@@ -36,7 +36,7 @@ public class LoginCheckFilter implements Filter {
 
         //1。获取本次请求URI
         String requestUri = request.getRequestURI();
-        log.info("拦截到请求:{}",requestUri);
+        //log.info("拦截到请求:{}",requestUri);
         //filterChain.doFilter(request,response);
 
         //不需要处理的请求路径
@@ -55,7 +55,7 @@ public class LoginCheckFilter implements Filter {
 
         //3。如果不需要处理 直接放行
         if(check){
-            log.info("本次请求{}不需要处理",requestUri);
+            //log.info("本次请求{}不需要处理",requestUri);
             filterChain.doFilter(request,response);
             return;
         }

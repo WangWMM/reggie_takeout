@@ -10,13 +10,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 
 /**
  * @author Wangmin
@@ -91,19 +94,27 @@ public class EmployeeController {
         log.info("新增员工，员工信息:{}",employee.toString());
         // 设置初始值密码
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        // employee.setCreateTime(LocalDateTime.now());
-        // employee.setUpdateTime(LocalDateTime.now());
+         employee.setCreateTime(LocalDateTime.now());
+         employee.setUpdateTime(LocalDateTime.now());
 
         // 获得当前用户登录的id
-        // Long id = (Long) request.getSession().getAttribute("employee");
+         Long id = (Long) request.getSession().getAttribute("employee");
 
-        // employee.setUpdateUser(id);
-        // employee.setCreateUser(id);
+         employee.setUpdateUser(id);
+         employee.setCreateUser(id);
 
         employeeService.save(employee);
         return R.success("新增员工成功");
     }
 
+    /**
+     * 员工分页查询
+     * @param page 页码
+     * @param pageSize 页容量
+     * @param name 查询条件
+     * @return
+     */
+    @GetMapping("/page")
     public R<Page> page (int page , int pageSize , String name ){
         log.info("page = {},pagesize = {}, name = {}",page, pageSize , name);
 
@@ -119,5 +130,23 @@ public class EmployeeController {
         //执行查询
         employeeService.page(pageInfo,queryWrapper);
         return R.success(pageInfo);
+    }
+
+    /**
+     * 根据员工id更改状态
+     * @param request
+     * @param employee
+     * @return
+     */
+    @PutMapping
+    public R<String> update (HttpServletRequest request,@RequestBody
+Employee employee){
+        log.info(employee.toString());
+
+        //Long employeeID = (Long)request.getSession().getAttribute("employee");
+        //employee.setUpdateUser(employeeID);
+        employee.setUpdateTime(LocalDateTime.now());
+        employeeService.updateById(employee);
+        return R.success("员工信息修改成功");
     }
 }
