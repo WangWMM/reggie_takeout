@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -148,5 +149,20 @@ Employee employee){
         employee.setUpdateTime(LocalDateTime.now());
         employeeService.updateById(employee);
         return R.success("员工信息修改成功");
+    }
+
+    /**
+     * 根据ID查询员工信息
+     * @param id
+     * @return employee员工信息对象
+     */
+    @GetMapping("/{id}")
+    public R<Employee> getById(@PathVariable Long id){
+        log.info("根据ID查询员工信息......");
+        Employee employee = employeeService.getById(id);
+        if(employee != null){
+            return R.success(employee);
+        }
+        return R.error("没有查询到相关信息");
     }
 }
