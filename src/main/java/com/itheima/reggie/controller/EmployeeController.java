@@ -1,7 +1,10 @@
 package com.itheima.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.common.R;
 import com.itheima.reggie.entity.Employee;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 /**
  * @author Wangmin
@@ -144,9 +148,9 @@ public class EmployeeController {
 Employee employee){
         log.info(employee.toString());
 
-        //Long employeeID = (Long)request.getSession().getAttribute("employee");
-        //employee.setUpdateUser(employeeID);
-        employee.setUpdateTime(LocalDateTime.now());
+        // Long employeeID = (Long)request.getSession().getAttribute("employee");
+        // employee.setUpdateUser(employeeID);
+        // employee.setUpdateTime(LocalDateTime.now());
         employeeService.updateById(employee);
         return R.success("员工信息修改成功");
     }
